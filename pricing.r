@@ -6,17 +6,23 @@ line_thickness = 2
 # For an m1.large ("Large") instance in Virginia or Oregon
 on_demand_hourly = 0.24
 
+# Show 1 year calculations only
+three_year = FALSE
+
 # Light utilization
+light = TRUE
 reserve_1year_light = 276
 reserve_1year_light_hourly = 0.156
 reserve_3year_light = 425
 reserve_3year_light_hourly = 0.124
 # Medium utilization
+medium = TRUE
 reserve_1year_medium = 640
 reserve_1year_medium_hourly = 0.096
 reserve_3year_medium = 1000
 reserve_3year_medium_hourly = 0.076
 # Heavy utilization
+heavy = TRUE
 reserve_1year_heavy = 780
 reserve_1year_heavy_hourly = 0.064
 reserve_3year_heavy = 2400
@@ -53,56 +59,62 @@ title("EC2 cost analysis for m1.large light",
 
 
 # Light utilization
-light_color="green"
-abline(reserve_1year_light, reserve_1year_light_daily, lty=1, lwd=line_thickness, col=light_color)
+    light_color="green"
+if (light) {
+    abline(reserve_1year_light, reserve_1year_light_daily, lty=1, lwd=line_thickness, col=light_color)
+    point_y = reserve_1year_light + reserve_1year_light_daily * break_1year_light_x
+    points(break_1year_light_x, point_y)
+    text(break_1year_light_x, point_y, labels = sprintf("%.0f days", break_1year_light_x), pos=1)
 
-abline(reserve_3year, reserve_3year_light_daily, lty=2, lwd=line_thickness, col=light_color)
-
-point_y = reserve_1year_light + reserve_1year_light_daily * break_1year_light_x
-points(break_1year_light_x, point_y)
-text(break_1year_light_x, point_y, labels = sprintf("%.0f days", break_1year_light_x), pos=1)
-
-point_y = reserve_3year + reserve_3year_light_daily * break_3year_light_x
-points(break_3year_light_x, point_y)
-text(break_3year_light_x, point_y, labels = sprintf("%.0f days", break_3year_light_x), pos=1)
+    if (three_year) {
+        abline(reserve_3year, reserve_3year_light_daily, lty=2, lwd=line_thickness, col=light_color)
+        point_y = reserve_3year + reserve_3year_light_daily * break_3year_light_x
+        points(break_3year_light_x, point_y)
+        text(break_3year_light_x, point_y, labels = sprintf("%.0f days", break_3year_light_x), pos=1)
+    }
+}
 
 # Medium utilization
 medium_color="blue"
-abline(reserve_1year_medium, reserve_1year_medium_daily, lty=1, lwd=line_thickness, col=medium_color)
+if (medium) {
+    abline(reserve_1year_medium, reserve_1year_medium_daily, lty=1, lwd=line_thickness, col=medium_color)
+    point_y = reserve_1year_medium + reserve_1year_medium_daily * break_1year_medium_x
+    points(break_1year_medium_x, point_y)
+    text(break_1year_medium_x, point_y, labels = sprintf("%.0f days", break_1year_medium_x), pos=1)
 
-abline(reserve_3year, reserve_3year_medium_daily, lty=2, lwd=line_thickness, col=medium_color)
-
-point_y = reserve_1year_medium + reserve_1year_medium_daily * break_1year_medium_x
-points(break_1year_medium_x, point_y)
-text(break_1year_medium_x, point_y, labels = sprintf("%.0f days", break_1year_medium_x), pos=1)
-
-point_y = reserve_3year + reserve_3year_medium_daily * break_3year_medium_x
-points(break_3year_medium_x, point_y)
-text(break_3year_medium_x, point_y, labels = sprintf("%.0f days", break_3year_medium_x), pos=1)
+    if (three_year) {
+        abline(reserve_3year, reserve_3year_medium_daily, lty=2, lwd=line_thickness, col=medium_color)
+        point_y = reserve_3year + reserve_3year_medium_daily * break_3year_medium_x
+        points(break_3year_medium_x, point_y)
+        text(break_3year_medium_x, point_y, labels = sprintf("%.0f days", break_3year_medium_x), pos=1)
+    }
+}
 
 #heavy utilization
 heavy_color="orange"
-abline(reserve_1year_heavy, reserve_1year_heavy_daily, lty=1, lwd=line_thickness, col=heavy_color)
+if (heavy) {
+    abline(reserve_1year_heavy, reserve_1year_heavy_daily, lty=1, lwd=line_thickness, col=heavy_color)
+    point_y = reserve_1year_heavy + reserve_1year_heavy_daily * break_1year_heavy_x
+    points(break_1year_heavy_x, point_y)
+    text(break_1year_heavy_x, point_y, labels = sprintf("%.0f days", break_1year_heavy_x), pos=1)
 
-abline(reserve_3year, reserve_3year_heavy_daily, lty=2, lwd=line_thickness, col=heavy_color)
-
-point_y = reserve_1year_heavy + reserve_1year_heavy_daily * break_1year_heavy_x
-points(break_1year_heavy_x, point_y)
-text(break_1year_heavy_x, point_y, labels = sprintf("%.0f days", break_1year_heavy_x), pos=1)
-
-point_y = reserve_3year + reserve_3year_heavy_daily * break_3year_heavy_x
-points(break_3year_heavy_x, point_y)
-text(break_3year_heavy_x, point_y, labels = sprintf("%.0f days", break_3year_heavy_x), pos=1)
+    if (three_year) {
+        abline(reserve_3year, reserve_3year_heavy_daily, lty=2, lwd=line_thickness, col=heavy_color)
+        point_y = reserve_3year + reserve_3year_heavy_daily * break_3year_heavy_x
+        points(break_3year_heavy_x, point_y)
+        text(break_3year_heavy_x, point_y, labels = sprintf("%.0f days", break_3year_heavy_x), pos=1)
+    }
+}
 
 # Legend
 legend_names <- c(
 sprintf("On Demand ($%.2f/hour)", on_demand_hourly),
-sprintf("1 year light ($%.0f+$%.2f/hour)", reserve_1year_light, reserve_1year_light_hourly),
-sprintf("3 year light ($%.0f+$%.2f/hour)", reserve_3year_light, reserve_3year_light_hourly),
-sprintf("1 year medium ($%.0f+$%.2f/hour)", reserve_1year_medium, reserve_1year_medium_hourly),
-sprintf("3 year medium ($%.0f+$%.2f/hour)", reserve_3year_medium, reserve_3year_medium_hourly),
-sprintf("1 year heavy ($%.0f+$%.2f/hour)", reserve_1year_heavy, reserve_1year_heavy_hourly),
-sprintf("3 year heavy ($%.0f+$%.2f/hour)", reserve_3year_heavy, reserve_3year_heavy_hourly)
+sprintf("1 year light utilization ($%.0f+$%.2f/hour)", reserve_1year_light, reserve_1year_light_hourly),
+sprintf("3 year light utilization ($%.0f+$%.2f/hour)", reserve_3year_light, reserve_3year_light_hourly),
+sprintf("1 year medium utilization ($%.0f+$%.2f/hour)", reserve_1year_medium, reserve_1year_medium_hourly),
+sprintf("3 year medium utilization ($%.0f+$%.2f/hour)", reserve_3year_medium, reserve_3year_medium_hourly),
+sprintf("1 year heavy utilization ($%.0f+$%.2f/hour)", reserve_1year_heavy, reserve_1year_heavy_hourly),
+sprintf("3 year heavy utilization ($%.0f+$%.2f/hour)", reserve_3year_heavy, reserve_3year_heavy_hourly)
 )
 legend_colors <- c("red", light_color, light_color, medium_color, medium_color, heavy_color, heavy_color)
 legend_line_types <- c(1,1,2,1,2,1,2)
