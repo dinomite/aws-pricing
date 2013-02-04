@@ -1,6 +1,6 @@
 # aws-pricing
 
-Graph reserved vs. on demand instance pricing to find the break even point.
+Graph reserved vs. on demand AWS EC2 instance pricing to find the break even point.
 
 Generate the graph with:
 
