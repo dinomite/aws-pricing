@@ -6,7 +6,9 @@ line_thickness = 2
 # For an m1.large ("Large") instance in Virginia or Oregon
 on_demand_hourly = 0.24
 
-# Show 1 year calculations only
+# Turningon 3 year calculations makes chart very difficult to read
+# Furthermore, Amazon drops prices often so a 3 year contract probably
+# isn't worth it (https://twitter.com/jordansissel/status/297405690174111745)
 three_year = FALSE
 
 # Light utilization
@@ -50,12 +52,8 @@ break_3year_heavy_x = reserve_3year_heavy / (on_demand_daily - reserve_3year_hea
 png(filename = "ec2_m1large_cost.png", width = width, height = height)
 plot(x,y, type="l", col='red', xlab="", ylab="cost ($USD)")
 
-title("EC2 cost analysis for m1.large light",
-      sprintf("(days)\nLight Utilization: 1-year is cheaper than on-demand after %.0f days of usage,\n 3-year is cheaper after %.0f days", break_1year_light_x, break_3year_light_x))
-#title("EC2 cost analysis for m1.large medium",
-      #sprintf("(days)\nMedium Utilization: 1-year is cheaper than on-demand after %.0f days of usage,\n 3-year is cheaper after %.0f days", break_1year_medium_x, break_3year_medium_x))
-#title("EC2 cost analysis for m1.large heavy",
-      #sprintf("(days)\nheavy Utilization: 1-year is cheaper than on-demand after %.0f days of usage,\n 3-year is cheaper after %.0f days", break_1year_heavy_x, break_3year_heavy_x))
+title("EC2 cost analysis for m1.large",
+      sprintf("(days)\nLight Utilization: 1 year is cheaper than on-demand after %.0f days, 3 year after %.0f days\nMedium Utilization: 1 year is cheaper than on-demand after %.0f days, 3 year after %.0f days\nHeavy Utilization: 1 year is cheaper than on-demand after %.0f days, 3 year after %.0f days", break_1year_light_x, break_3year_light_x, break_1year_medium_x, break_3year_medium_x, break_1year_heavy_x, break_3year_heavy_x))
 
 
 # Light utilization
